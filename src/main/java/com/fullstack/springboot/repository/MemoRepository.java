@@ -59,16 +59,16 @@ public interface MemoRepository extends JpaRepository<Memo, Long>{
 	@Query(value = "Update Memo m Set m.memoText =:memoText where m.mno = :mno")
 	int updateMemoText(@Param("mno") Long mno, @Param("memoText") String memoText);
 	
+	
 	@Transactional
 	@Modifying
 	@Query(value = "Update Memo m Set m.memoText =:#{#param.memoText} where m.mno = :#{#param.mno}")
 	int updateMemoTextMemoObj(@Param("param") Memo memo);
 	
-	
 	//@Query 사용시에 Page 객체를 리턴받을 수 있는데, 당연히 Pageable 객체를 파라미터로 주면 됨.
 	//단!!!!!!! Pageable 이 페이지수를 계산 하려면, 반드시 조회되는 목록수(count) 가 필요함.
 	//때문에 이 쿼리를 반드시 수행해서 목록수를 같이 넘겨야 함.
-	//이 쿼리는 countQuery 라는 속성값으로 사용하면됨.
+	//이 쿼리는 countQuery 라는 속성값으로 사용하면됨. 
 	@Query(value = "Select m from Memo m where m.mno > :mno", countQuery = "Select count(m) from Memo m where m.mno > :mno")
 	Page<Memo> getListWithPage(@Param("mno")Long mno, Pageable pageable);
 	
@@ -76,6 +76,7 @@ public interface MemoRepository extends JpaRepository<Memo, Long>{
 	//우리가 사용하는 쿼리문을 그대로 사용할 수 있음.
 	@Query(value = "Select * from tbl_memo where mno>0",nativeQuery = true)
 	List<Memo> getNativeList();
+	
 	
 	
 }
